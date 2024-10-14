@@ -13,9 +13,25 @@ import {
     Image,
 } from '@chakra-ui/react'
 
+import { GoogleLogin, googleLogout } from '@react-oauth/google';
+
 export default function IniciarSesion() {
+    const responseMessage = (response) => {
+        console.log(response);
+    };
+    const errorMessage = (error) => {
+        console.log(error);
+    };
+
+    const logOut = () => {
+        googleLogout();
+        console.log('Logged out');
+    };
+
     return (
+
         <Stack minH={'90vh'} direction={{ base: 'column', md: 'row' }}>
+
             <Flex p={8} flex={1} align={'center'} justify={'center'}>
                 <Stack spacing={4} w={'full'} maxW={'md'}>
                     <Heading fontSize={'2xl'}>Iniciar sesion con tu cuenta</Heading>
@@ -40,21 +56,8 @@ export default function IniciarSesion() {
                         </Button>
 
                         <Flex justify={'center'}>
-                            <Button
-                                size='md'
-                                height='48px'
-                                width='200px'
-                                border='2px'
-                                borderColor='green.500'
-                            >
-                                <Image
-                                    mr={10}
-                                    boxSize="40px"
-                                    src="https://img.icons8.com/?size=512&id=V5cGWnc9R4xj&format=png"
-                                    alt="icon"
-                                />
-                                Usar google
-                            </Button>
+                            <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
+                            <button onClick={logOut}>Log out</button>
                         </Flex>
 
                     </Stack>

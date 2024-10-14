@@ -3,11 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './NavBar';
 import IniciarSesion from './IniciarSesion';
 
-
 function App() {
   return (
     <ChakraProvider theme={theme}>
-
       <Router>
         <NavBar />
         <Routes>
