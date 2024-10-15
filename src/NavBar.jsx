@@ -8,7 +8,6 @@ import {
     Button,
     Stack,
     Collapse,
-    Icon,
     Popover,
     PopoverTrigger,
     PopoverContent,
@@ -16,34 +15,53 @@ import {
     useBreakpointValue,
     useDisclosure,
     Input,
+    useToast,
+    Avatar,
+    Icon
 } from '@chakra-ui/react'
 import {
     HamburgerIcon,
     CloseIcon,
     ChevronDownIcon,
-    ChevronRightIcon,
     SearchIcon,
+    ChevronRightIcon
 } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
+import { googleLogout } from '@react-oauth/google'
+import './App.css'
 
 
-export default function NavBar() {
+export default function NavBar({ user, setUser }) {
     const { isOpen, onToggle } = useDisclosure()
+    const toast = useToast()
 
 
+    const logOut = () => {
+        googleLogout()
+        setUser(null);
+        localStorage.removeItem('user')
+        toast({
+            title: "Sesión cerrada",
+            status: "success",
+            duration: 4000,
+            isClosable: true
+        })
+    }
 
     return (
         <Box>
             <Flex
-                bg={useColorModeValue('white', 'gray.800')}
-                color={useColorModeValue('gray.600', 'white')}
-                minH={'60px'}
+                bg={useColorModeValue('black', 'black')}
+                color={useColorModeValue('white', 'white')}
+                minH={'80px'}
+                fontSize={'1.1rem'}
                 py={{ base: 2 }}
                 px={{ base: 4 }}
                 borderBottom={1}
                 borderStyle={'solid'}
                 borderColor={useColorModeValue('black', 'black')}
                 align={'center'}>
+
                 <Flex
                     flex={{ base: 1, md: 'auto' }}
                     ml={{ base: -2 }}
@@ -60,23 +78,24 @@ export default function NavBar() {
                         <Text
                             textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
                             fontFamily={'heading'}
-                            color={useColorModeValue('gray.800', 'white')}>
+                            color={useColorModeValue('white', 'white')}>
                             E-Commerce
                         </Text>
                     </Link>
 
                     <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
-                        <DesktopNav
-                        />
+                        <DesktopNav logOut={logOut} />
                     </Flex>
                 </Flex>
+
+                <UserSection user={user} logOut={logOut} />
 
                 <Stack
                     flex={{ base: 1, md: 0 }}
                     justify={'flex-end'}
                     direction={'row'}
                     spacing={6}>
-                    <Button as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'}>
+                    <Button ml={'350px'} as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'} color={'white'}>
                         Registrate
                     </Button>
                     <Button
@@ -88,26 +107,37 @@ export default function NavBar() {
                         color={'white'}
                         bg={'black'}
                         _hover={{
-                            bg: 'gray.800',
+                            bg: 'gray.800'
                         }}>
-                        Iniciar Sesion
+                        Iniciar Sesión
                     </Button>
-
                 </Stack>
-
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
-                <MobileNav />
+                <MobileNav logOut={logOut} />
             </Collapse>
         </Box>
     )
 }
 
-const DesktopNav = () => {
-    const linkColor = useColorModeValue('gray.600', 'gray.200')
-    const linkHoverColor = useColorModeValue('gray.800', 'white')
-    const popoverContentBgColor = useColorModeValue('white', 'gray.800')
+const UserSection = ({ user }) => {
+    return (
+        <Flex align="center">
+            {user ? (
+                <>
+                    <Avatar name={user.name || `${user.given_name} ${user.family_name}`} src={user.picture} />
+                    <Text ml={'10px'}>Bienvenido, {user.name || user.given_name}!</Text>
+                </>
+            ) : null}
+        </Flex>
+    )
+}
+
+const DesktopNav = ({ logOut }) => {
+    const linkColor = useColorModeValue('white', 'white')
+    const linkHoverColor = useColorModeValue('gray.800', 'black')
+    const popoverContentBgColor = "black";
 
     return (
         <Stack direction={'row'} spacing={4}>
@@ -115,37 +145,26 @@ const DesktopNav = () => {
                 <Box key={navItem.label}>
                     {navItem.hasInput ? (
                         <Flex>
-                            <Input
-                                placeholder="Buscar..."
-                                size="sm"
-                                w="250px"
-                                mr={3}
-
-                            />
-                            <Button
-                                colorScheme="blue"
-                                size="sm">
+                            <Input placeholder="Buscar..." size="sm" w="250px" mr={3} style={{ color: 'white' }} />
+                            <Button colorScheme="blue" size="sm">
                                 <Icon as={SearchIcon} />
                             </Button>
                         </Flex>
                     ) : (
                         <Popover trigger={'hover'} placement={'bottom-start'}>
                             <PopoverTrigger>
-                                <Box
-                                    as="a"
+                                <Link to={navItem.to}
                                     p={2}
-                                    href={navItem.href ?? '#'}
                                     fontSize={'sm'}
                                     fontWeight={500}
                                     color={linkColor}
                                     _hover={{
                                         textDecoration: 'none',
-                                        color: linkHoverColor,
+                                        color: linkHoverColor
                                     }}>
                                     {navItem.label}
-                                </Box>
+                                </Link>
                             </PopoverTrigger>
-
                             {navItem.children && (
                                 <PopoverContent
                                     border={0}
@@ -156,7 +175,7 @@ const DesktopNav = () => {
                                     minW={'sm'}>
                                     <Stack>
                                         {navItem.children.map((child) => (
-                                            <DesktopSubNav key={child.label} {...child} />
+                                            <DesktopSubNav key={child.label} {...child} logOut={logOut} />
                                         ))}
                                     </Stack>
                                 </PopoverContent>
@@ -166,10 +185,12 @@ const DesktopNav = () => {
                 </Box>
             ))}
         </Stack>
-    )
-}
+    );
+};
 
-const DesktopSubNav = ({ label, href, subLabel }) => {
+
+
+const DesktopSubNav = ({ label, href, subLabel, onClick, logOut }) => {
     return (
         <Box
             as="a"
@@ -178,7 +199,15 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
             display={'block'}
             p={2}
             rounded={'md'}
-            _hover={{ bg: useColorModeValue('gray.200', 'black') }}>
+            onClick={(e) => {
+                if (onClick) {
+                    onClick(e);
+                }
+                if (label === 'Cerrar sesión') {
+                    logOut();
+                }
+            }}
+            _hover={{ bg: useColorModeValue('gray.500', 'gray.700') }}>
             <Stack direction={'row'} align={'center'}>
                 <Box>
                     <Text
@@ -187,7 +216,7 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
                         fontWeight={500}>
                         {label}
                     </Text>
-                    <Text fontSize={'sm'}>{subLabel}</Text>
+                    {subLabel && <Text fontSize={'sm'}>{subLabel}</Text>}
                 </Box>
                 <Flex
                     transition={'all .3s ease'}
@@ -204,17 +233,17 @@ const DesktopSubNav = ({ label, href, subLabel }) => {
     )
 }
 
-const MobileNav = () => {
+const MobileNav = ({ logOut }) => {
     return (
         <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ md: 'none' }}>
             {NAV_ITEMS.map((navItem) => (
-                <MobileNavItem key={navItem.label} {...navItem} />
+                <MobileNavItem key={navItem.label} {...navItem} logOut={logOut} />
             ))}
         </Stack>
     )
 }
 
-const MobileNavItem = ({ label, children, href }) => {
+const MobileNavItem = ({ label, children, href, logOut }) => {
     const { isOpen, onToggle } = useDisclosure()
 
     return (
@@ -226,7 +255,7 @@ const MobileNavItem = ({ label, children, href }) => {
                 justifyContent="space-between"
                 alignItems="center"
                 _hover={{
-                    textDecoration: 'none',
+                    textDecoration: 'none'
                 }}>
                 <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
                     {label}
@@ -252,7 +281,7 @@ const MobileNavItem = ({ label, children, href }) => {
                     align={'start'}>
                     {children &&
                         children.map((child) => (
-                            <Box as="a" key={child.label} py={2} href={child.href}>
+                            <Box as="a" key={child.label} py={2} href={child.href} onClick={child.onClick}>
                                 {child.label}
                             </Box>
                         ))}
@@ -262,16 +291,14 @@ const MobileNavItem = ({ label, children, href }) => {
     )
 }
 
-
-
 const NAV_ITEMS = [
     {
         label: 'Ayuda',
-        href: '#',
+        to: '/Help'
     },
     {
         label: 'Buscar',
-        hasInput: true,
+        hasInput: true
     },
     {
         label: 'Productos',
@@ -279,27 +306,25 @@ const NAV_ITEMS = [
             {
                 label: 'Teclados',
                 href: '#',
+
             },
             {
                 label: 'Mouses',
-
-                href: '#',
+                href: '#'
             },
             {
                 label: 'Monitores',
-
-                href: '#',
+                href: '#'
             },
             {
                 label: 'Notebooks',
-
-                href: '#',
-            },
-        ],
+                href: '#'
+            }
+        ]
     },
     {
         label: 'PC armada',
-        href: '#',
+        href: '#'
     },
     {
         label: 'Mi Cuenta',
@@ -307,18 +332,19 @@ const NAV_ITEMS = [
             {
                 label: 'Facturas',
                 subLabel: 'todo sobre sus facturas',
-                href: '#',
+                href: '#'
             },
             {
                 label: 'Compras',
                 subLabel: 'todo sobre sus compras',
-                href: '#',
+                href: '#'
             },
             {
                 label: 'Cerrar sesión',
                 subLabel: '',
                 href: '#',
-            },
-        ],
-    },
+                onClick: (e) => e.preventDefault()
+            }
+        ]
+    }
 ]

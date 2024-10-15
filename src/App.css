@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap');
+
+
+* {
+    font-family: "Oswald", sans-serif;
+}
+
+p {
+    transition: all 0.3s ease-in-out;
+}
+
+p:hover {
+    transition: all 0.3s ease-in-out;
+}
+
+p:hover {
+    transform: scale(1.1);
+}
