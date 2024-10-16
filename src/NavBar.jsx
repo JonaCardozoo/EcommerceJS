@@ -54,6 +54,10 @@ export default function NavBar({ user, setUser }) {
                 bg={useColorModeValue('black', 'black')}
                 color={useColorModeValue('white', 'white')}
                 minH={'80px'}
+                w={'100%'}
+                direction={{ base: 'column', md: 'row' }}
+                justify={'end'}
+                wrap={'wrap'}
                 fontSize={'1.1rem'}
                 py={{ base: 2 }}
                 px={{ base: 4 }}
@@ -61,11 +65,10 @@ export default function NavBar({ user, setUser }) {
                 borderStyle={'solid'}
                 borderColor={useColorModeValue('black', 'black')}
                 align={'center'}>
-
                 <Flex
                     flex={{ base: 1, md: 'auto' }}
                     ml={{ base: -2 }}
-                    display={{ base: 'flex', md: 'none' }}>
+                    display={{ base: 'flex', lg: 'none' }}>
                     <IconButton
                         onClick={onToggle}
                         icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
@@ -74,16 +77,8 @@ export default function NavBar({ user, setUser }) {
                     />
                 </Flex>
                 <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-                    <Link to={'/'}>
-                        <Text
-                            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-                            fontFamily={'heading'}
-                            color={useColorModeValue('white', 'white')}>
-                            E-Commerce
-                        </Text>
-                    </Link>
 
-                    <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
+                    <Flex display={{ base: 'none', lg: 'flex' }} ml={10}>
                         <DesktopNav logOut={logOut} />
                     </Flex>
                 </Flex>
@@ -95,22 +90,27 @@ export default function NavBar({ user, setUser }) {
                     justify={'flex-end'}
                     direction={'row'}
                     spacing={6}>
-                    <Button ml={'350px'} as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'} color={'white'}>
-                        Registrate
-                    </Button>
-                    <Button
-                        as={Link}
-                        to="/IniciarSesion"
-                        display={{ base: 'none', md: 'inline-flex' }}
-                        fontSize={'sm'}
-                        fontWeight={600}
-                        color={'white'}
-                        bg={'black'}
-                        _hover={{
-                            bg: 'gray.800'
-                        }}>
-                        Iniciar Sesión
-                    </Button>
+                    {!user ? (
+                        <>
+                            <Button ml={'350px'} as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'} color={'white'} >
+                                Registrate
+                            </Button>
+                            <Button
+                                as={Link}
+                                to="/IniciarSesion"
+
+                                fontSize={'sm'}
+                                fontWeight={600}
+                                color={'white'}
+                                bg={'black'}
+                                _hover={{
+                                    bg: 'gray.800'
+                                }}>
+                                Iniciar Sesión
+                            </Button>
+                        </>
+                    ) : null}
+
                 </Stack>
             </Flex>
 
@@ -235,7 +235,7 @@ const DesktopSubNav = ({ label, href, subLabel, onClick, logOut }) => {
 
 const MobileNav = ({ logOut }) => {
     return (
-        <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ md: 'none' }}>
+        <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ lg: 'none' }}>
             {NAV_ITEMS.map((navItem) => (
                 <MobileNavItem key={navItem.label} {...navItem} logOut={logOut} />
             ))}
@@ -243,7 +243,7 @@ const MobileNav = ({ logOut }) => {
     )
 }
 
-const MobileNavItem = ({ label, children, href, logOut }) => {
+const MobileNavItem = ({ label, children, href }) => {
     const { isOpen, onToggle } = useDisclosure()
 
     return (

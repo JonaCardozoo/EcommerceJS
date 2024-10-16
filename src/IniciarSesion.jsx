@@ -9,8 +9,7 @@ import {
     Input,
     Stack,
     Image,
-    useToast,
-    Avatar,
+    useToast
 } from '@chakra-ui/react';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
@@ -53,8 +52,8 @@ export default function IniciarSesion({ setUser }) {
         } catch (error) {
 
             toast({
-                title: "Error al decodificar el token",
-                description: "Ocurrió un error al procesar el token de inicio de sesión.",
+                title: "Error al iniciar sesion, intente mas tarde",
+                description: "Ocurrió un error al iniciar sesión.",
                 status: "error",
                 duration: 4000,
                 isClosable: true,
