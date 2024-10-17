@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './NavBar';
 import IniciarSesion from './IniciarSesion';
 import Help from './Help';
+import InformacionPersonal from './InformacionPersonal';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -28,6 +29,7 @@ function App() {
         <Routes>
           <Route path="/IniciarSesion" element={<IniciarSesion setUser={setUser} />} />
           <Route path="/Help" element={<Help />} />
+          <Route path='/InformacionPersonal' element={<InformacionPersonal />} />
         </Routes>
       </Router>
     </ChakraProvider>

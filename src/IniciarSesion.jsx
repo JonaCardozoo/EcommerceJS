@@ -108,7 +108,14 @@ export default function IniciarSesion({ setUser }) {
                 <Image
                     alt={'Login Image'}
                     objectFit={'cover'}
-                    src={'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1352&q=80'}
+                    src={'/LOGOECOMMERCE.png'}
+                    bg={'black'}
+                    borderRadius={'60px'}
+                    width={'90%'}
+                    height={'90%'}
+                    marginTop={'5%'}
+                    ml={{ base: '5%', md: '0%' }}
+
                 />
             </Flex>
         </Stack>

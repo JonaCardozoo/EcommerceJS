@@ -38,6 +38,8 @@ export default function NavBar({ user, setUser }) {
     const toast = useToast()
 
 
+
+
     const logOut = () => {
         googleLogout()
         setUser(null);
@@ -50,34 +52,33 @@ export default function NavBar({ user, setUser }) {
         })
     }
 
+
     return (
         <Box>
             <Flex
                 bg={useColorModeValue('black', 'black')}
                 color={useColorModeValue('white', 'white')}
-                minH={'80px'}
+                minH={'50px'}
                 w="full"
                 wrap={'wrap'}
-
                 direction={{ base: 'column', md: 'row' }}
                 justify={{ base: 'center', lg: 'space-between' }}
-
                 fontSize={'1.1rem'}
                 py={{ base: 2 }}
                 px={{ base: 4 }}
-                borderBottom={1}
-                borderStyle={'solid'}
-                borderColor={useColorModeValue('black', 'black')}
-                align={'center'}>
+                align={'center'}
+            >
 
 
                 <Link to="/">
                     <Image
-                        src={'./public/LOGOECOMMERCEPNG.png'}
+                        src={'/LOGOECOMMERCEPNG.png'}
                         alt={'logo'}
-                        width={'100px'}
-                        height={'100px'}
+                        width={'60px'}
+                        height={'60px'}
                         onClick={onToggle}
+                        objectFit={'cover'}
+
                     />
                 </Link>
 
@@ -101,7 +102,7 @@ export default function NavBar({ user, setUser }) {
                 <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
 
                     <Flex display={{ base: 'none', lg: 'flex' }} ml={10}>
-                        <DesktopNav logOut={logOut} />
+                        <DesktopNav logOut={logOut} user={user} />
                     </Flex>
                 </Flex>
 
@@ -152,7 +153,7 @@ export default function NavBar({ user, setUser }) {
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
-                <MobileNav logOut={logOut} />
+                <MobileNav logOut={logOut} user={user} />
             </Collapse>
         </Box >
     )
@@ -163,7 +164,7 @@ const UserSection = ({ user }) => {
         <Flex align="center">
             {user ? (
                 <>
-                    <Avatar name={user.name || `${user.given_name} ${user.family_name}`} src={user.picture} />
+                    <Avatar name={user.name || `${user.given_name} ${user.family_name}`} src={user.picture} w={'50px'} h={'50px'} />
                     <Text ml={'10px'}>Bienvenido, {user.name || user.given_name}!</Text>
                 </>
             ) : null}
@@ -171,53 +172,112 @@ const UserSection = ({ user }) => {
     )
 }
 
-const DesktopNav = ({ logOut }) => {
-    const linkColor = useColorModeValue('white', 'white')
-    const linkHoverColor = useColorModeValue('gray.800', 'black')
+const DesktopNav = ({ logOut, user }) => {
+    const linkColor = useColorModeValue('black', 'black');
+    const linkHoverColor = useColorModeValue('gray.800', 'black');
     const popoverContentBgColor = "black";
+    const notAccesible = 4;
 
     return (
         <Stack direction={'row'} spacing={4}>
-            {NAV_ITEMS.map((navItem) => (
-                <Box key={navItem.label}>
-                    {navItem.hasInput ? (
-                        <Flex>
-                            <Input placeholder="Buscar..." size="sm" w="250px" mr={3} style={{ color: 'white' }} />
-                            <Button colorScheme="blue" size="sm">
-                                <Icon as={SearchIcon} />
-                            </Button>
-                        </Flex>
+            {NAV_ITEMS.map((navItem, index) => {
+                if (!user && index === notAccesible) {
+                    return null;
+                }
+                return (
+                    <Box key={navItem.label}>
+                        {navItem.hasInput ? (
+                            <Flex>
+                                <Input placeholder="Buscar..." size="sm" w="300px" h="35px" mr={1} style={{ color: 'white' }} />
+                                <Button colorScheme="blue" size="sm">
+                                    <Icon as={SearchIcon} />
+                                </Button>
+                            </Flex>
+                        ) : (
+                            <Popover trigger={'hover'} placement={'bottom-start'}>
+                                <PopoverTrigger>
+                                    <Link to={navItem.to}
+                                        p={3}
+                                        fontSize={'sm'}
+                                        fontWeight={500}
+                                        color={linkColor}
+                                        _hover={{
+                                            textDecoration: 'none',
+                                            color: linkHoverColor
+                                        }}>
+                                        {navItem.label}
+                                    </Link>
+                                </PopoverTrigger>
+                                {navItem.children && (
+                                    <PopoverContent
+                                        border={0}
+                                        boxShadow={'xl'}
+                                        bg={popoverContentBgColor}
+                                        p={4}
+                                        rounded={'xl'}
+                                        minW={'sm'}>
+                                        <Stack>
+                                            {navItem.children.map((child) => (
+                                                <DesktopSubNav key={child.label} {...child} logOut={logOut} />
+                                            ))}
+                                        </Stack>
+                                    </PopoverContent>
+                                )}
+                            </Popover>
+                        )}
+                    </Box>
+                );
+            })}
+        </Stack>
+    );
+};
+
+
+const DesktopSubNav = ({ label, href, subLabel, logOut }) => {
+    return (
+        <Box
+            as="div"
+            role={'group'}
+            display={'block'}
+            p={2}
+            rounded={'md'}
+            _hover={{ bg: useColorModeValue('gray.500', 'gray.700') }}>
+            <Stack direction={'row'} align={'center'}>
+                <Box>
+                    {label === 'Cerrar sesión' ? (
+                        <Text
+                            onClick={logOut}
+                            fontWeight={500}
+                            transition={'all .3s ease'}
+                            cursor="pointer"
+                        >
+                            {label}
+                        </Text>
                     ) : (
-                        <Popover trigger={'hover'} placement={'bottom-start'}>
-                            <PopoverTrigger>
-                                <Link to={navItem.to}
-                                    p={2}
-                                    fontSize={'sm'}
-                                    fontWeight={500}
-                                    color={linkColor}
-                                    _hover={{
-                                        textDecoration: 'none',
-                                        color: linkHoverColor
-                                    }}>
-                                    {navItem.label}
-                                </Link>
-                            </PopoverTrigger>
-                            {navItem.children && (
-                                <PopoverContent
-                                    border={0}
-                                    boxShadow={'xl'}
-                                    bg={popoverContentBgColor}
-                                    p={4}
-                                    rounded={'xl'}
-                                    minW={'sm'}>
-                                    <Stack>
-                                        {navItem.children.map((child) => (
-                                            <DesktopSubNav key={child.label} {...child} logOut={logOut} />
-                                        ))}
-                                    </Stack>
-                                </PopoverContent>
-                            )}
-                        </Popover>
+                        <Link to={label === 'Informacion personal' ? '/InformacionPersonal' : href} style={{ textDecoration: 'none' }}>
+                            <Text
+                                transition={'all .3s ease'}
+                                _groupHover={{ color: 'black.200' }}
+                                fontWeight={500}>
+                                {label}
+                            </Text>
+                        </Link>
+                    )}
+                    {subLabel && <Text fontSize={'sm'}>{subLabel}</Text>}
+                </Box>
+            </Stack>
+        </Box>
+    );
+};
+
+const MobileNav = ({ logOut, user }) => {
+    const notAccesible = 4;
+    return (
+        <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ lg: 'none' }}>
+            {NAV_ITEMS.map((navItem, index) => (
+                <Box key={navItem.label}>
+                    {!user && index === notAccesible ? null : (
+                        <MobileNavItem navItem={navItem} logOut={logOut} user={user} />
                     )}
                 </Box>
             ))}
@@ -225,99 +285,79 @@ const DesktopNav = ({ logOut }) => {
     );
 };
 
+const MobileNavItem = ({ navItem, logOut }) => {
+    const { isOpen, onToggle } = useDisclosure();
 
-
-const DesktopSubNav = ({ label, href, subLabel, onClick, logOut }) => {
     return (
-        <Box
-            as="a"
-            href={href}
-            role={'group'}
-            display={'block'}
-            p={2}
-            rounded={'md'}
-            onClick={(e) => {
-                if (onClick) {
-                    onClick(e);
-                }
-                if (label === 'Cerrar sesión') {
-                    logOut();
-                }
-            }}
-            _hover={{ bg: useColorModeValue('gray.500', 'gray.700') }}>
-            <Stack direction={'row'} align={'center'}>
-                <Box>
+        <Stack spacing={4} onClick={navItem.children && onToggle}>
+            {navItem.hasInput ? (
+                <Flex>
+                    <Input placeholder="Buscar..." size="sm" w="300px" h="35px" mr={1} style={{ color: 'black' }} />
+                    <Button colorScheme="blue" size="sm">
+                        <Icon as={SearchIcon} />
+                    </Button>
+                </Flex>
+            ) : (
+                <Box
+                    py={2}
+                    as="div"
+                    justifyContent="space-between"
+                    alignItems="center"
+                    _hover={{
+                        textDecoration: 'none',
+                    }}
+                >
                     <Text
-                        transition={'all .3s ease'}
-                        _groupHover={{ color: 'black.200' }}
-                        fontWeight={500}>
-                        {label}
+                        fontWeight={600}
+                        color={useColorModeValue('gray.600', 'gray.200')}
+                        cursor="pointer"
+                        onClick={() => {
+                            if (navItem.label === 'Cerrar sesión') {
+                                logOut();
+                            }
+                        }}
+                    >
+                        {navItem.label}
                     </Text>
-                    {subLabel && <Text fontSize={'sm'}>{subLabel}</Text>}
+                    {navItem.children && (
+                        <Icon
+                            as={ChevronDownIcon}
+                            transition={'all .25s ease-in-out'}
+                            transform={isOpen ? 'rotate(180deg)' : ''}
+                            w={6}
+                            h={6}
+                        />
+                    )}
                 </Box>
-
-            </Stack>
-        </Box>
-    )
-}
-
-const MobileNav = ({ logOut }) => {
-    return (
-        <Stack bg={useColorModeValue('white', 'gray.800')} p={4} display={{ lg: 'none' }}>
-            {NAV_ITEMS.map((navItem) => (
-                <MobileNavItem key={navItem.label} {...navItem} logOut={logOut} />
-            ))}
-        </Stack>
-    )
-}
-
-const MobileNavItem = ({ label, children, href }) => {
-    const { isOpen, onToggle } = useDisclosure()
-
-    return (
-        <Stack spacing={4} onClick={children && onToggle}>
-            <Box
-                py={2}
-                as="a"
-                href={href ?? '#'}
-                justifyContent="space-between"
-                alignItems="center"
-                _hover={{
-                    textDecoration: 'none'
-                }}>
-                <Text fontWeight={600} color={useColorModeValue('gray.600', 'gray.200')}>
-                    {label}
-                </Text>
-                {children && (
-                    <Icon
-                        as={ChevronDownIcon}
-                        transition={'all .25s ease-in-out'}
-                        transform={isOpen ? 'rotate(180deg)' : ''}
-                        w={6}
-                        h={6}
-                    />
-                )}
-            </Box>
+            )}
 
             <Collapse in={isOpen} animateOpacity style={{ marginTop: '0!important' }}>
                 <Stack
-                    mt={2}
+                    mt={10}
                     pl={4}
                     borderLeft={1}
                     borderStyle={'solid'}
                     borderColor={useColorModeValue('gray.200', 'gray.700')}
-                    align={'start'}>
-                    {children &&
-                        children.map((child) => (
-                            <Box as="a" key={child.label} py={2} href={child.href} onClick={child.onClick}>
+                    align={'start'}
+                >
+                    {navItem.children &&
+                        navItem.children.map((child) => (
+                            <Box
+                                key={child.label}
+                                py={2}
+                                as={Link}
+                                to={child.to}
+                                onClick={child.label === 'Cerrar sesión' ? logOut : null}
+                            >
                                 {child.label}
                             </Box>
                         ))}
                 </Stack>
             </Collapse>
         </Stack>
-    )
-}
+    );
+};
+
 
 const NAV_ITEMS = [
     {
@@ -330,46 +370,51 @@ const NAV_ITEMS = [
     },
     {
         label: 'Productos',
+
         children: [
             {
                 label: 'Teclados',
-                href: '#',
+                to: '/teclados',
             },
             {
                 label: 'Mouses',
-                href: '#'
+                to: '/mouses',
             },
             {
                 label: 'Monitores',
-                href: '#'
+                to: '/monitores',
             },
             {
                 label: 'Notebooks',
-                href: '#'
+                to: '/notebooks',
             }
         ]
     },
     {
         label: 'PC armada',
-        href: '#'
+        to: '/pc-armada',
     },
     {
         label: 'Mi Cuenta',
         children: [
             {
+                label: 'Informacion personal',
+                subLabel: 'todo sobre su informacion personal',
+                to: '/InformacionPersonal',
+            },
+            {
                 label: 'Facturas',
                 subLabel: 'todo sobre sus facturas',
-                href: '#'
+                to: '/facturas',
             },
             {
                 label: 'Compras',
                 subLabel: 'todo sobre sus compras',
-                href: '#'
+                to: '/compras',
             },
             {
                 label: 'Cerrar sesión',
                 subLabel: '',
-                href: '#',
                 onClick: (e) => e.preventDefault()
             }
         ]
