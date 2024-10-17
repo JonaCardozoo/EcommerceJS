@@ -4,15 +4,3 @@
 * {
     font-family: "Oswald", sans-serif;
 }
-
-p {
-    transition: all 0.3s ease-in-out;
-}
-
-p:hover {
-    transition: all 0.3s ease-in-out;
-}
-
-p:hover {
-    transform: scale(1.1);
-}

@@ -17,7 +17,9 @@ import {
     Input,
     useToast,
     Avatar,
-    Icon
+    Icon,
+    Image
+
 } from '@chakra-ui/react'
 import {
     HamburgerIcon,
@@ -54,10 +56,12 @@ export default function NavBar({ user, setUser }) {
                 bg={useColorModeValue('black', 'black')}
                 color={useColorModeValue('white', 'white')}
                 minH={'80px'}
-                w={'100%'}
-                direction={{ base: 'column', md: 'row' }}
-                justify={'end'}
+                w="full"
                 wrap={'wrap'}
+
+                direction={{ base: 'column', md: 'row' }}
+                justify={{ base: 'center', lg: 'space-between' }}
+
                 fontSize={'1.1rem'}
                 py={{ base: 2 }}
                 px={{ base: 4 }}
@@ -65,16 +69,34 @@ export default function NavBar({ user, setUser }) {
                 borderStyle={'solid'}
                 borderColor={useColorModeValue('black', 'black')}
                 align={'center'}>
+
+
+                <Link to="/">
+                    <Image
+                        src={'./public/LOGOECOMMERCEPNG.png'}
+                        alt={'logo'}
+                        width={'100px'}
+                        height={'100px'}
+                        onClick={onToggle}
+                    />
+                </Link>
+
+
                 <Flex
                     flex={{ base: 1, md: 'auto' }}
-                    ml={{ base: -2 }}
-                    display={{ base: 'flex', lg: 'none' }}>
+
+                    display={{ base: 'flex', lg: 'none' }}
+
+                >
                     <IconButton
                         onClick={onToggle}
-                        icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} />}
+                        icon={isOpen ? <CloseIcon w={3} h={3} /> : <HamburgerIcon w={5} h={5} color={'white'} />}
                         variant={'ghost'}
+                        display={{ base: 'flex', lg: 'none' }}
                         aria-label={'Toggle Navigation'}
+                        mx={'auto'}
                     />
+
                 </Flex>
                 <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
 
@@ -87,37 +109,52 @@ export default function NavBar({ user, setUser }) {
 
                 <Stack
                     flex={{ base: 1, md: 0 }}
-                    justify={'flex-end'}
-                    direction={'row'}
-                    spacing={6}>
+                    justify={{ base: 'center', md: 'flex-end' }}
+                    direction={{ base: 'column', md: 'row' }}
+                    alignItems={'center'}
+                    spacing={6}
+                >
                     {!user ? (
-                        <>
-                            <Button ml={'350px'} as={'a'} fontSize={'sm'} fontWeight={400} variant={'link'} href={'#'} color={'white'} >
+                        <Flex direction={{ base: 'column', md: 'row' }} gap={4} >
+                            <Button
+                                as={Link}
+                                fontSize={'sm'}
+                                fontWeight={600}
+                                color={'white'}
+                                padding={'20px'}
+                                bg={'transparent'}
+                                border={'1px solid white'}
+                                _hover={{
+                                    color: 'black',
+                                    bg: 'white'
+                                }}
+                            >
                                 Registrate
                             </Button>
                             <Button
                                 as={Link}
                                 to="/IniciarSesion"
-
                                 fontSize={'sm'}
                                 fontWeight={600}
                                 color={'white'}
-                                bg={'black'}
+                                bg={'transparent'}
+                                border={'1px solid white'}
                                 _hover={{
-                                    bg: 'gray.800'
-                                }}>
+                                    color: 'black',
+                                    bg: 'white'
+                                }}
+                            >
                                 Iniciar Sesión
                             </Button>
-                        </>
+                        </Flex>
                     ) : null}
-
                 </Stack>
             </Flex>
 
             <Collapse in={isOpen} animateOpacity>
                 <MobileNav logOut={logOut} />
             </Collapse>
-        </Box>
+        </Box >
     )
 }
 
@@ -218,16 +255,7 @@ const DesktopSubNav = ({ label, href, subLabel, onClick, logOut }) => {
                     </Text>
                     {subLabel && <Text fontSize={'sm'}>{subLabel}</Text>}
                 </Box>
-                <Flex
-                    transition={'all .3s ease'}
-                    transform={'translateX(-10px)'}
-                    opacity={0}
-                    _groupHover={{ opacity: '100%', transform: 'translateX(0)' }}
-                    justify={'flex-end'}
-                    align={'center'}
-                    flex={1}>
-                    <Icon color={'black.200'} w={5} h={5} as={ChevronRightIcon} />
-                </Flex>
+
             </Stack>
         </Box>
     )
@@ -306,7 +334,6 @@ const NAV_ITEMS = [
             {
                 label: 'Teclados',
                 href: '#',
-
             },
             {
                 label: 'Mouses',
