@@ -5,6 +5,7 @@ import NavBar from './NavBar';
 import IniciarSesion from './IniciarSesion';
 import Help from './Help';
 import InformacionPersonal from './InformacionPersonal';
+import Carousel from './Carousel';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -32,6 +33,7 @@ function App() {
           <Route path='/InformacionPersonal' element={<InformacionPersonal />} />
         </Routes>
       </Router>
+      <Carousel />
     </ChakraProvider>
   );
 }
