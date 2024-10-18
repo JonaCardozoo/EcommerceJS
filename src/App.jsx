@@ -6,6 +6,7 @@ import IniciarSesion from './IniciarSesion';
 import Help from './Help';
 import InformacionPersonal from './InformacionPersonal';
 import Carousel from './Carousel';
+import Productos from './Productos';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,6 +35,7 @@ function App() {
         </Routes>
       </Router>
       <Carousel />
+      <Productos />
     </ChakraProvider>
   );
 }
