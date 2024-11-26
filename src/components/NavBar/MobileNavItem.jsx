@@ -1,4 +1,3 @@
-import { NAV_ITEMS } from "./utils/NavItems";
 import {
   Box,
   Flex,
@@ -13,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-i;
 
 export const MobileNavItem = ({ navItem, logOut }) => {
   const { isOpen, onToggle } = useDisclosure();
