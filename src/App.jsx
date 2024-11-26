@@ -33,11 +33,10 @@ function App() {
           <Route path="/IniciarSesion" element={<IniciarSesion setUser={setUser} />} />
           <Route path="/Help" element={<Help />} />
           <Route path='/InformacionPersonal' element={<InformacionPersonal />} />
-          <Route path='/Error' element={<Error/>}/>
+          <Route path='/Error' element={<Error />} />
+          <Route path='/' element={<><Carousel /><Productos /></>}></Route>
         </Routes>
       </Router>
-      <Carousel />
-      <Productos />
     </ChakraProvider>
   );
 }

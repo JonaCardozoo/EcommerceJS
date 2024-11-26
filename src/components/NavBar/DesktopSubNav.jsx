@@ -1,4 +1,4 @@
-import { Box, Text, Stack, useColorModeValue } from "@chakra-ui/react";
+import { Box, Text, Stack } from "@chakra-ui/react";
 
 import { Link } from "react-router-dom";
 
@@ -10,7 +10,7 @@ export const DesktopSubNav = ({ label, href, subLabel, logOut }) => {
       display={"block"}
       p={2}
       rounded={"md"}
-      _hover={{ bg: useColorModeValue("gray.500", "gray.700") }}>
+    >
       <Stack direction={"row"} align={"center"}>
         <Box>
           {label === "Cerrar sesión" ? (
