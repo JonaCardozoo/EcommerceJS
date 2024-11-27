@@ -3,17 +3,15 @@ import {
     Checkbox,
     Flex,
     Text,
-    FormControl,
-    FormLabel,
+    Field,
     Heading,
     Input,
     Stack,
-    Image,
-    useToast
+    Image
 } from '@chakra-ui/react';
 import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
-
+import { toaster } from "./components/ui/toaster"
 export default function IniciarSesion({ setUser }) {
     const toast = useToast();
     const navigate = useNavigate();
@@ -38,7 +36,7 @@ export default function IniciarSesion({ setUser }) {
             if (decodedUser) {
                 setUser(decodedUser);  // Actualizar el usuario en el estado global
 
-                toast({
+                toast.create({
                     title: "Inicio de sesión con éxito",
                     status: "success",
                     duration: 4000,
@@ -51,7 +49,7 @@ export default function IniciarSesion({ setUser }) {
             }
         } catch (error) {
 
-            toast({
+            toaster.create({
                 title: "Error al iniciar sesion, intente mas tarde",
                 description: "Ocurrió un error al iniciar sesión.",
                 status: "error",
@@ -63,7 +61,7 @@ export default function IniciarSesion({ setUser }) {
 
     const errorMessage = (error) => {
 
-        toast({
+        toaster.create({
             title: "Error al iniciar sesión",
             status: "error",
             duration: 4000,
@@ -76,14 +74,14 @@ export default function IniciarSesion({ setUser }) {
             <Flex p={8} flex={1} align={'center'} justify={'center'}>
                 <Stack spacing={4} w={'full'} maxW={'md'}>
                     <Heading fontSize={'2xl'}>Iniciar sesión con tu cuenta</Heading>
-                    <FormControl id="email">
-                        <FormLabel>Usuario</FormLabel>
+                    <Field id="email">
+                        <Input>Usuario</Input>
                         <Input type="text" />
-                    </FormControl>
-                    <FormControl id="password">
-                        <FormLabel>Contraseña</FormLabel>
+                    </Field>
+                    <Field id="password">
+                        <Input>Contraseña</Input>
                         <Input type="password" />
-                    </FormControl>
+                    </Field>
                     <Stack spacing={6}>
                         <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
                             <Checkbox>Recuérdame</Checkbox>

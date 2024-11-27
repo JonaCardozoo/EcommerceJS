@@ -1,4 +1,4 @@
-import { ChakraProvider, theme } from '@chakra-ui/react';
+import { Provider } from "./components/ui/provider"
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './NavBar';
@@ -8,6 +8,7 @@ import InformacionPersonal from './InformacionPersonal';
 import Carousel from './Carousel';
 import Productos from './Productos';
 import Error from './Error';
+import { defaultSystem } from '@chakra-ui/react';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -26,7 +27,7 @@ function App() {
   }, [user]);
 
   return (
-    <ChakraProvider theme={theme} height="1440px">
+    <Provider value={defaultSystem} height="1440px">
       <Router>
         <NavBar user={user} setUser={setUser} />
         <Routes>
@@ -37,7 +38,7 @@ function App() {
           <Route path='/' element={<><Carousel /><Productos /></>}></Route>
         </Routes>
       </Router>
-    </ChakraProvider>
+    </Provider>
   );
 }
 

@@ -8,11 +8,8 @@ import {
     Heading,
     Text,
     Button,
-    Image,
     Icon,
-    IconButton,
-    createIcon,
-    useColorModeValue,
+    createIcon
 } from '@chakra-ui/react'
 
 export default function Help() {
@@ -85,7 +82,7 @@ export default function Help() {
                         top={'-20%'}
                         left={0}
                         zIndex={-1}
-                        color={useColorModeValue('red.50', 'red.400')}
+                        color={'red.50'}
                     />
                     <Box
                         position={'relative'}

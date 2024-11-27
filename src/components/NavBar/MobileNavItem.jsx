@@ -4,11 +4,10 @@ import {
   Text,
   Button,
   Stack,
-  Collapse,
-  useColorModeValue,
+  Collapsible,
   useDisclosure,
   Input,
-  Icon,
+  Icon
 } from "@chakra-ui/react";
 import { ChevronDownIcon, SearchIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
@@ -36,7 +35,7 @@ export const MobileNavItem = ({ navItem, logOut }) => {
           }}>
           <Text
             fontWeight={600}
-            color={useColorModeValue("gray.600", "gray.200")}
+            color={"gray.200"}
             cursor="pointer"
             onClick={() => {
               if (navItem.label === "Cerrar sesión") {
@@ -57,13 +56,13 @@ export const MobileNavItem = ({ navItem, logOut }) => {
         </Box>
       )}
 
-      <Collapse in={isOpen} animateOpacity style={{ marginTop: "0!important" }}>
+      <Collapsible.Root open={isOpen} collapse-height style={{ marginTop: "0!important" }}>
         <Stack
           mt={10}
           pl={4}
           borderLeft={1}
           borderStyle={"solid"}
-          borderColor={useColorModeValue("gray.200", "gray.700")}
+          borderColor={"gray.200"}
           align={"start"}>
           {navItem.children &&
             navItem.children.map((child) => (
@@ -77,7 +76,7 @@ export const MobileNavItem = ({ navItem, logOut }) => {
               </Box>
             ))}
         </Stack>
-      </Collapse>
+      </Collapsible.Root>
     </Stack>
   );
 };

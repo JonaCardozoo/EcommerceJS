@@ -9,26 +9,25 @@ import {
   IconButton,
   Button,
   Stack,
-  Collapse,
-  useColorModeValue,
+  Collapsible,
   useDisclosure,
-  useToast,
-  Image,
+  Image
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
+import { toaster } from "./components/ui/toaster"
 import "./App.css";
+import { NAV_ITEMS } from "./components/NavBar/utils/NavItems";
 
 export default function NavBar({ user, setUser }) {
   const { isOpen, onToggle } = useDisclosure();
-  const toast = useToast();
-
+  console.log(NAV_ITEMS);
   const logOut = () => {
     googleLogout();
     setUser(null);
     localStorage.removeItem("user");
-    toast({
+    toaster.create({
       title: "Sesión cerrada",
       status: "success",
       duration: 4000,
@@ -39,8 +38,8 @@ export default function NavBar({ user, setUser }) {
   return (
     <Box>
       <Flex
-        bg={useColorModeValue("black", "black")}
-        color={useColorModeValue("white", "white")}
+        bg={"black"}
+        color={"white"}
         minH={"50px"}
         w="full"
         wrap={"wrap"}
@@ -73,6 +72,7 @@ export default function NavBar({ user, setUser }) {
         </Flex>
         <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
           <Flex display={{ base: "none", lg: "flex" }} ml={10}>
+
             <DesktopNav logOut={logOut} user={user} />
           </Flex>
         </Flex>
@@ -120,9 +120,9 @@ export default function NavBar({ user, setUser }) {
         </Stack>
       </Flex>
 
-      <Collapse in={isOpen} animateOpacity>
+      <Collapsible.Root open={isOpen} collapse-height>
         <MobileNav logOut={logOut} user={user} />
-      </Collapse>
+      </Collapsible.Root>
     </Box>
   );
 }

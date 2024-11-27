@@ -5,15 +5,15 @@ import {
     Box,
     Button,
     Grid,
-    FormControl,
-    FormLabel,
+    Field,
     Input,
     RadioGroup,
-    Radio,
     Stack,
     Text,
     GridItem
 } from "@chakra-ui/react";
+
+import { Radio } from "./components/ui/radio"
 
 export default function InformacionPersonal() {
     const [user, setUser] = useState(null);
@@ -63,40 +63,40 @@ export default function InformacionPersonal() {
                         <Text fontSize="2xl" mb={5} color={'red.500'}>
                             Datos Personales
                         </Text>
-                        <FormControl mb={4}>
-                            <FormLabel>ID Cliente</FormLabel>
+                        <Field mb={4}>
+                            <Input>ID Cliente</Input>
                             <Input value={user.sub} disabled />
 
-                        </FormControl>
-                        <FormControl mb={4}>
-                            <FormLabel>Nombre y Apellido</FormLabel>
+                        </Field>
+                        <Field mb={4}>
+                            <Input>Nombre y Apellido</Input>
                             <Input
                                 placeholder="Nombre y Apellido"
                                 value={user.name}
                                 onChange={(e) => setNombre(e.target.value)}
                             />
-                        </FormControl>
+                        </Field>
 
-                        <FormControl mb={4}>
-                            <FormLabel>DNI</FormLabel>
+                        <Field mb={4}>
+                            <Input>DNI</Input>
 
                             <Input value={dni} placeholder="DNI" onChange={(e) => setDni(e.target.value)} />
 
-                        </FormControl>
-                        <FormControl mb={4}>
-                            <FormLabel>Email</FormLabel>
+                        </Field>
+                        <Field mb={4}>
+                            <Input>Email</Input>
                             <Input placeholder="Email" value={user.email} onChange={(e) => setEmail(e.target.value)} disabled />
-                        </FormControl>
+                        </Field>
 
-                        <FormControl mb={4}>
-                            <FormLabel>Teléfono de contacto</FormLabel>
+                        <Field mb={4}>
+                            <Input>Teléfono de contacto</Input>
                             <Grid templateColumns="1fr 2fr" gap={4}>
                                 <Input value={telefono} placeholder="Teléfono" onChange={(e) => setTelefono(e.target.value)} />
                             </Grid>
-                        </FormControl>
+                        </Field>
 
-                        <FormControl mb={4}>
-                            <FormLabel >Condición Fiscal</FormLabel>
+                        <Field mb={4}>
+                            <Input >Condición Fiscal</Input>
                             <RadioGroup defaultValue="Consumidor Final">
                                 <Stack direction="column">
                                     <Radio value="Responsable Inscripto" >Responsable Inscripto</Radio>
@@ -106,7 +106,7 @@ export default function InformacionPersonal() {
                                     <Radio value="Exento">Exento</Radio>
                                 </Stack>
                             </RadioGroup>
-                        </FormControl>
+                        </Field>
                     </Box>
                 </GridItem>
 
@@ -118,37 +118,37 @@ export default function InformacionPersonal() {
                         <Text fontSize="2xl" mb={5} color={'red.500'}>
                             Facturacion
                         </Text>
-                        <FormControl mb={4}>
-                            <FormLabel>Dirección Fiscal</FormLabel>
+                        <Field mb={4}>
+                            <Input>Dirección Fiscal</Input>
                             <Input placeholder="Dirección Fiscal" onChange={(e) => setDireccion(e.target.value)} />
-                        </FormControl>
+                        </Field>
 
                         <Grid templateColumns="2fr 1fr" gap={4} mb={4}>
-                            <FormControl>
-                                <FormLabel>Numeración</FormLabel>
+                            <Field>
+                                <Input>Numeración</Input>
                                 <Input placeholder="Numeración" onChange={(e) => setNumeracion(e.target.value)} />
-                            </FormControl>
+                            </Field>
 
-                            <FormControl>
-                                <FormLabel>Piso/depto</FormLabel>
+                            <Field>
+                                <Input>Piso/depto</Input>
                                 <Input placeholder="Piso/depto" onChange={(e) => setPiso(e.target.value)} />
-                            </FormControl>
+                            </Field>
                         </Grid>
 
-                        <FormControl mb={4}>
-                            <FormLabel>Código Postal</FormLabel>
+                        <Field mb={4}>
+                            <Input>Código Postal</Input>
                             <Input placeholder="Código Postal" onChange={(e) => setCodigoPostal(e.target.value)} />
-                        </FormControl>
+                        </Field>
 
-                        <FormControl mb={4}>
-                            <FormLabel>Provincia</FormLabel>
+                        <Field mb={4}>
+                            <Input>Provincia</Input>
                             <Input placeholder="Provincia" onChange={(e) => setProvincia(e.target.value)} />
-                        </FormControl>
+                        </Field>
 
-                        <FormControl mb={4}>
-                            <FormLabel>Localidad</FormLabel>
+                        <Field mb={4}>
+                            <Input>Localidad</Input>
                             <Input placeholder="Localidad" onChange={(e) => setLocalidad(e.target.value)} />
-                        </FormControl>
+                        </Field>
                     </Box>
                 </GridItem>
             </Grid>
