@@ -1,6 +1,6 @@
 import { NAV_ITEMS } from "./utils/NavItems";
 import { Box, Stack, useColorModeValue } from "@chakra-ui/react";
-import { MobileNavItem } from "../../components/NavBar/MobileNavItem";
+import { MobileNavItem } from "./MobileNavItem";
 
 export const MobileNav = ({ logOut, user }) => {
   const notAccesible = 4;

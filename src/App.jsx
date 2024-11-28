@@ -1,19 +1,19 @@
-import { ChakraProvider, theme } from '@chakra-ui/react';
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import NavBar from './NavBar';
-import IniciarSesion from './IniciarSesion';
-import Help from './Help';
-import InformacionPersonal from './InformacionPersonal';
-import Carousel from './Carousel';
-import Productos from './Productos';
-import Error from './Error';
+import { ChakraProvider, theme } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import NavBar from "./components/NavBar/NavBar";
+import IniciarSesion from "./components/Account/IniciarSesion";
+import Help from "./components/Help/Help";
+import InformacionPersonal from "./components/Account/InformacionPersonal";
+import Carousel from "./components/Carousel/Carousel";
+import Productos from "./components/Products/Productos";
+import Error from "./components/Errors/Error";
 
 function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
@@ -21,7 +21,7 @@ function App() {
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem("user", JSON.stringify(user));
     }
   }, [user]);
 
@@ -32,8 +32,8 @@ function App() {
         <Routes>
           <Route path="/IniciarSesion" element={<IniciarSesion setUser={setUser} />} />
           <Route path="/Help" element={<Help />} />
-          <Route path='/InformacionPersonal' element={<InformacionPersonal />} />
-          <Route path='/Error' element={<Error/>}/>
+          <Route path="/InformacionPersonal" element={<InformacionPersonal />} />
+          <Route path="/Error" element={<Error />} />
         </Routes>
       </Router>
       <Carousel />

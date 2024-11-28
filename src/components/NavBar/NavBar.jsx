@@ -1,7 +1,7 @@
 "use client";
-import { UserSection } from "./components/NavBar/UserSection";
-import { DesktopNav } from "./components/NavBar/DesktopNav";
-import { MobileNav } from "./components/NavBar/MobileNav";
+import { UserSection } from "./UserSection";
+import { DesktopNav } from "./DesktopNav";
+import { MobileNav } from "./MobileNav";
 
 import {
   Box,
@@ -18,7 +18,6 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { googleLogout } from "@react-oauth/google";
-import "./App.css";
 
 export default function NavBar({ user, setUser }) {
   const { isOpen, onToggle } = useDisclosure();
